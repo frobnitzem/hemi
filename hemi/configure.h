@@ -115,15 +115,17 @@ cudaError_t configureGrid(ExecutionPolicy &p, KernelFunc k)
 
     if ((configState & ExecutionPolicy::GridSize) == 0) {
         cudaOccResult result;
+        size_t blockSize = p.getBlockSize().x * p.getBlockSize().y * p.getBlockSize().z;
         cudaOccError occErr = cudaOccMaxActiveBlocksPerMultiprocessor(&result,
                                                                       &occProp, 
                                                                       &occAttrib, 
                                                                       &occState,
-                                                                      p.getBlockSize(), 
-                                                                       p.getSharedMemBytes());
+                                                                      blockSize, 
+                                                                      p.getSharedMemBytes());
         if (occErr != CUDA_OCC_SUCCESS) return cudaErrorInvalidConfiguration;
         p.setGridSize(result.activeBlocksPerMultiprocessor * numSMs);
-        if (p.getGridSize() < numSMs) return cudaErrorInvalidConfiguration;
+        size_t gridSize = p.getGridSize().x * p.getGridSize().y * p.getGridSize().z;
+        if (gridSize < numSMs) return cudaErrorInvalidConfiguration;
     }
 
     if ((configState & ExecutionPolicy::SharedMem) == 0) {
@@ -131,9 +133,10 @@ cudaError_t configureGrid(ExecutionPolicy &p, KernelFunc k)
         int smemGranularity = 0;
         cudaOccError occErr = cudaOccSMemAllocationGranularity(&smemGranularity, &occProp);
         if (occErr != CUDA_OCC_SUCCESS) return cudaErrorInvalidConfiguration;
+        size_t gridSize = p.getGridSize().x * p.getGridSize().y * p.getGridSize().z;
         size_t sbytes = availableSharedBytesPerBlock(props->sharedMemPerBlock,
                                                      attribs.sharedSizeBytes,
-                                                     __occDivideRoundUp(p.getGridSize(), numSMs),
+                                                     __occDivideRoundUp(gridSize, numSMs),
                                                      smemGranularity);
         p.setSharedMemBytes(sbytes);
     }

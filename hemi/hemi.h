@@ -111,6 +111,14 @@
 
   // Stream type
   typedef int hemiStream_t;
+  #if defined(HEMI_CUDA_DISABLE)
+  // dim3 type
+  struct dim3 {
+      unsigned int x, y, z;
+      constexpr dim3(unsigned int vx = 1, unsigned int vy = 1, unsigned int vz = 1)
+          : x(vx), y(vy), z(vz) {}
+  };
+  #endif
 
   #define HEMI_DEFINE_CONSTANT(def, value) def ## _hostconst = value
   #define HEMI_DEFINE_STATIC_CONSTANT(def, value) static def ## _hostconst = value

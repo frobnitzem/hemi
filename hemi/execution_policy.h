@@ -30,8 +30,8 @@ public:
 
     ExecutionPolicy() 
     : mState(Automatic), 
-      mGridSize(0), 
-      mBlockSize(0), 
+      mGridSize(0,1,1), 
+      mBlockSize(0,0,0), 
       mSharedMemBytes(0),
       mStream((hemiStream_t)0) {}
     
@@ -54,23 +54,30 @@ public:
 
     int    getConfigState()    const { return mState;          }
     
-    int    getGridSize()       const { return mGridSize;       }
-    int    getBlockSize()      const { return mBlockSize;      }
-    int    getMaxBlockSize()   const { return mMaxBlockSize;   }
+    dim3   getGridSize()       const { return mGridSize;       }
+    dim3   getBlockSize()      const { return mBlockSize;      }
+    dim3   getMaxBlockSize()   const { return mMaxBlockSize;   }
     size_t getSharedMemBytes() const { return mSharedMemBytes; }
     hemiStream_t getStream()   const { return mStream; }
  
     void setGridSize(int arg) { 
-        mGridSize = arg;  
-        if (mGridSize > 0) mState |= GridSize; 
+        mGridSize.x = arg;
+        mGridSize.y = 1;
+        mGridSize.z = 1;
+        if (arg > 0) mState |= GridSize; 
         else mState &= (FullManual - GridSize);
     }   
-    void setBlockSize(int arg) { mBlockSize = arg; 
-        if (mBlockSize > 0) mState |= BlockSize; 
+    void setBlockSize(int arg) {
+        mBlockSize.x = arg; 
+        mBlockSize.y = 1; 
+        mBlockSize.z = 1; 
+        if (arg > 0) mState |= BlockSize; 
         else mState &= (FullManual - BlockSize);
     }
     void setMaxBlockSize(int arg) {
-    	mMaxBlockSize = arg;
+    	mMaxBlockSize.x = arg;
+    	mMaxBlockSize.y = 1;
+    	mMaxBlockSize.z = 1;
     }
     void setSharedMemBytes(size_t arg) { 
         mSharedMemBytes = arg; 
@@ -82,9 +89,9 @@ public:
 
 private:
     int    mState;
-    int    mGridSize;
-    int    mBlockSize;
-    int    mMaxBlockSize;
+    dim3   mGridSize;
+    dim3   mBlockSize;
+    dim3   mMaxBlockSize;
     size_t mSharedMemBytes;
     hemiStream_t mStream;
 };

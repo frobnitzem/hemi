@@ -14,8 +14,8 @@ TEST(ExecutionPolicyTest, StateReflectsConfiguration) {
     EXPECT_EQ (0, configState & ExecutionPolicy::SharedMem);
     EXPECT_EQ (0, configState & ExecutionPolicy::BlockSize);
     EXPECT_EQ (0, configState & ExecutionPolicy::GridSize);
-	EXPECT_EQ (0, p.getGridSize());
-	EXPECT_EQ (0, p.getBlockSize());
+	EXPECT_EQ (0, p.getGridSize().x);
+	EXPECT_EQ (0, p.getBlockSize().x);
 	EXPECT_EQ (0, p.getSharedMemBytes());
 
 	// shared memory only
@@ -27,8 +27,8 @@ TEST(ExecutionPolicyTest, StateReflectsConfiguration) {
     EXPECT_NE (0, configState & ExecutionPolicy::SharedMem);
     EXPECT_EQ (0, configState & ExecutionPolicy::BlockSize);
     EXPECT_EQ (0, configState & ExecutionPolicy::GridSize);
-	EXPECT_EQ (0, p.getGridSize());
-	EXPECT_EQ (0, p.getBlockSize());
+	EXPECT_EQ (0, p.getGridSize().x);
+	EXPECT_EQ (0, p.getBlockSize().x);
 	EXPECT_EQ (1024, p.getSharedMemBytes());
 
     // Block Size Only
@@ -40,8 +40,8 @@ TEST(ExecutionPolicyTest, StateReflectsConfiguration) {
     EXPECT_EQ (0, configState & ExecutionPolicy::SharedMem);
     EXPECT_NE (0, configState & ExecutionPolicy::BlockSize);
     EXPECT_EQ (0, configState & ExecutionPolicy::GridSize);
-    EXPECT_EQ (0, p.getGridSize());
-	EXPECT_EQ (512, p.getBlockSize());
+    EXPECT_EQ (0, p.getGridSize().x);
+	EXPECT_EQ (512, p.getBlockSize().x);
 	EXPECT_EQ (0, p.getSharedMemBytes());
 
     // Block Size and Shared Memory Only
@@ -54,8 +54,8 @@ TEST(ExecutionPolicyTest, StateReflectsConfiguration) {
     EXPECT_NE (0, configState & ExecutionPolicy::SharedMem);
     EXPECT_NE (0, configState & ExecutionPolicy::BlockSize);
     EXPECT_EQ (0, configState & ExecutionPolicy::GridSize);
-    EXPECT_EQ (0, p.getGridSize());
-	EXPECT_EQ (512, p.getBlockSize());
+    EXPECT_EQ (0, p.getGridSize().x);
+	EXPECT_EQ (512, p.getBlockSize().x);
 	EXPECT_EQ (1024, p.getSharedMemBytes());
 
     // Grid Size Only
@@ -67,8 +67,8 @@ TEST(ExecutionPolicyTest, StateReflectsConfiguration) {
     EXPECT_EQ (0, configState & ExecutionPolicy::SharedMem);
     EXPECT_EQ (0, configState & ExecutionPolicy::BlockSize);
     EXPECT_NE (0, configState & ExecutionPolicy::GridSize);
-    EXPECT_EQ (100, p.getGridSize());
-	EXPECT_EQ (0, p.getBlockSize());
+    EXPECT_EQ (100, p.getGridSize().x);
+	EXPECT_EQ (0, p.getBlockSize().x);
 	EXPECT_EQ (0, p.getSharedMemBytes());
 
     // Grid Size and Shared Memory Only
@@ -81,8 +81,8 @@ TEST(ExecutionPolicyTest, StateReflectsConfiguration) {
     EXPECT_NE (0, configState & ExecutionPolicy::SharedMem);
     EXPECT_EQ (0, configState & ExecutionPolicy::BlockSize);
     EXPECT_NE (0, configState & ExecutionPolicy::GridSize);
-	EXPECT_EQ (100, p.getGridSize());
-	EXPECT_EQ (0, p.getBlockSize());
+	EXPECT_EQ (100, p.getGridSize().x);
+	EXPECT_EQ (0, p.getBlockSize().x);
 	EXPECT_EQ (1024, p.getSharedMemBytes());
 
     // Grid Size and Block Size Only
@@ -95,8 +95,8 @@ TEST(ExecutionPolicyTest, StateReflectsConfiguration) {
     EXPECT_EQ (0, configState & ExecutionPolicy::SharedMem);
     EXPECT_NE (0, configState & ExecutionPolicy::BlockSize);
     EXPECT_NE (0, configState & ExecutionPolicy::GridSize);
-	EXPECT_EQ (100, p.getGridSize());
-	EXPECT_EQ (512, p.getBlockSize());
+	EXPECT_EQ (100, p.getGridSize().x);
+	EXPECT_EQ (512, p.getBlockSize().x);
 	EXPECT_EQ (0, p.getSharedMemBytes());
 
     // Full Manual Configuration
@@ -107,8 +107,8 @@ TEST(ExecutionPolicyTest, StateReflectsConfiguration) {
     EXPECT_NE (0, configState & ExecutionPolicy::SharedMem);
     EXPECT_NE (0, configState & ExecutionPolicy::BlockSize);
     EXPECT_NE (0, configState & ExecutionPolicy::GridSize);
-   	EXPECT_EQ (1, p.getGridSize());
-	EXPECT_EQ (256, p.getBlockSize());
+   	EXPECT_EQ (1, p.getGridSize().x);
+	EXPECT_EQ (256, p.getBlockSize().x);
 	EXPECT_EQ (10, p.getSharedMemBytes());
 
 	// Full Manual Configuration With Separate Calls
@@ -122,8 +122,8 @@ TEST(ExecutionPolicyTest, StateReflectsConfiguration) {
     EXPECT_NE (0, configState & ExecutionPolicy::SharedMem);
     EXPECT_NE (0, configState & ExecutionPolicy::BlockSize);
     EXPECT_NE (0, configState & ExecutionPolicy::GridSize);
-   	EXPECT_EQ (100, p.getGridSize());
-	EXPECT_EQ (512, p.getBlockSize());
+   	EXPECT_EQ (100, p.getGridSize().x);
+	EXPECT_EQ (512, p.getBlockSize().x);
 	EXPECT_EQ (1024, p.getSharedMemBytes());
 
 	p = ExecutionPolicy(); // reset
@@ -140,8 +140,8 @@ TEST(ExecutionPolicyTest, StateReflectsConfiguration) {
     // Setting 0 grid or block size makes them *Automatic*
     EXPECT_EQ (0, configState & ExecutionPolicy::BlockSize);
     EXPECT_EQ (0, configState & ExecutionPolicy::GridSize);
-   	EXPECT_EQ (0, p.getGridSize());
-	EXPECT_EQ (0, p.getBlockSize());
+   	EXPECT_EQ (0, p.getGridSize().x);
+	EXPECT_EQ (0, p.getBlockSize().x);
 	EXPECT_EQ (0, p.getSharedMemBytes());
 
 	// Re-setting block or grid size to >0 should set them to manual
