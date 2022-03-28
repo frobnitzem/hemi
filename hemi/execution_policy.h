@@ -60,28 +60,28 @@ public:
     size_t getSharedMemBytes() const { return mSharedMemBytes; }
     hemiStream_t getStream()   const { return mStream; }
  
-    void setGridSize(int arg) { 
-        mGridSize.x = arg;
-        mGridSize.y = 1;
-        mGridSize.z = 1;
-        if (arg > 0) mState |= GridSize; 
+    void setGridSize(int nx, int ny=1, int nz=1) {
+        mGridSize.x = nx;
+        mGridSize.y = ny;
+        mGridSize.z = nz;
+        if (nx > 0) mState |= GridSize;
         else mState &= (FullManual - GridSize);
     }   
-    void setBlockSize(int arg) {
-        mBlockSize.x = arg; 
-        mBlockSize.y = 1; 
-        mBlockSize.z = 1; 
-        if (arg > 0) mState |= BlockSize; 
+    void setBlockSize(int nx, int ny=1, int nz=1) {
+        mBlockSize.x = nx;
+        mBlockSize.y = ny;
+        mBlockSize.z = nz;
+        if (nx > 0) mState |= BlockSize;
         else mState &= (FullManual - BlockSize);
     }
-    void setMaxBlockSize(int arg) {
-    	mMaxBlockSize.x = arg;
-    	mMaxBlockSize.y = 1;
-    	mMaxBlockSize.z = 1;
+    void setMaxBlockSize(int nx, int ny=1, int nz=1) {
+        mMaxBlockSize.x = nx;
+        mMaxBlockSize.y = ny;
+        mMaxBlockSize.z = nz;
     }
     void setSharedMemBytes(size_t arg) { 
         mSharedMemBytes = arg; 
-        mState |= SharedMem; 
+        mState |= SharedMem;
     }
     void setStream(hemiStream_t stream) {
         mStream = stream;
