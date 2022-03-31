@@ -19,48 +19,34 @@ CXX_FLAGS  := $(STD) -I../../
 HOST_ONLY_FLAGS := -DHEMI_CUDA_DISABLE
 
 # uncomment for debug
-#DEBUG_FLAGS := -g -DDEBUG
-#DEBUG_FLAGS_NVCC := -G
+DEBUG_FLAGS := -g -DDEBUG
+DEBUG_FLAGS_NVCC := -G
 
 # comment for debug
-CXX_FLAGS += -O3
+#CXX_FLAGS += -O3
 
 CXX_FLAGS += $(DEBUG_FLAGS)
 
 NVCC_FLAGS := $(CXX_FLAGS) $(DEBUG_FLAGS_NVCC) --expt-extended-lambda
 
 EXES := hello_device hello_host_nvcc hello_host \
-		hello_lambda_device hello_lambda_host_nvcc hello_lambda_host \
+	hello_lambda_device hello_lambda_host_nvcc hello_lambda_host \
         hello_global \
-        saxpy_host saxpy_device
+        saxpy_host saxpy_device \
+	gemm_host gemm_device gemm_host_nvcc
 
 all: $(EXES)
-
-hello_device: hello.cpp
-	$(NVCC) $? $(NVCC_FLAGS) -x cu -o $@
-
-hello_host_nvcc: hello.cpp
-	$(NVCC) $? $(CXX_FLAGS) -x c++ -o $@
-
-hello_host: hello.cpp
-	$(CXX) $? $(CXX_FLAGS) $(HOST_ONLY_FLAGS) -o $@
-
-hello_lambda_device: hello_lambda.cpp
-	$(NVCC) $? $(NVCC_FLAGS) -x cu -o $@
-
-hello_lambda_host_nvcc: hello_lambda.cpp
-	$(NVCC) $? $(CXX_FLAGS) -x c++ -o $@
-
-hello_lambda_host: hello_lambda.cpp
-	$(CXX) $? $(CXX_FLAGS) $(HOST_ONLY_FLAGS) -o $@
 
 hello_global: hello_global.cu
 	$(NVCC) $? $(NVCC_FLAGS) -x cu -o $@
 
-saxpy_host: saxpy.cpp
+%_host: %.cpp
 	$(CXX) $? $(CXX_FLAGS) $(HOST_ONLY_FLAGS) -o $@
 
-saxpy_device: saxpy.cpp
+%_host_nvcc: %.cpp
+	$(NVCC) $? $(CXX_FLAGS) -x c++ -o $@
+
+%_device: %.cpp
 	$(NVCC) $? $(NVCC_FLAGS) -x cu -o $@
 
 clean:
