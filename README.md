@@ -60,6 +60,7 @@ To use CPM, add the following to your CMakeLists.txt:
 
     > include(cmake/CPM.cmake)
     > CPMAddPackage("gh:harrism/Hemi@2.0.1")
+    > include("${Hemi_SOURCE_DIR}/Hemi.cmake")
     > HemiLink(<your target>)
 
 If, instead, you want to use cmake to permanently install Hemi
@@ -67,6 +68,9 @@ If, instead, you want to use cmake to permanently install Hemi
 
     > mkdir build && cd build
     > cmake -DCMAKE_INSTALL_PREFIX=/usr/local ..
+
+And then add the usual `find_package(Hemi 2.0 REQUIRED)` command
+to your package's `CMakeLists.txt` to load Hemi's targets.
 
 Both installation methods will provide the same, modern cmake that
 exports `HemiCPU`, `HemiCUDA`, and `Hemi` targets.
@@ -81,12 +85,12 @@ a `HemiLink(<target>)` function that will first do
 `target_link_libraries(<target> PUBLIC Hemi)` and then mark every
 source file belonging to the target as CUDA source language.
 
-
 An example using the first setup is included in `examples/blackscholes`,
 and using the second is included in `examples/simple`.
 
-The compilation instructions for both are the same.  To enable compiling for GPU,
-you must set your CUDA architecture:
+The compilation instructions for both are the same.
+To enable compiling your package for Hemi with GPU,
+you must set your CUDA architecture at configure time:
 
     > cd examples/blackscholes
     > mkdir build && cd build

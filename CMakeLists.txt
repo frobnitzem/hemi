@@ -22,8 +22,9 @@ target_include_directories(HemiCUDA
                             $<INSTALL_INTERFACE:include>
                            )
 
-# Now create the Hemi target
-include(Hemi.cmake)
+# Don't craete the Hemi target here.
+# It needs to be included by our dependencies instead.
+# include(Hemi.cmake)
 
 #####################################################################
 install(DIRECTORY "${CMAKE_SOURCE_DIR}/hemi"
